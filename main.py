@@ -2,6 +2,7 @@ import random
 import argparse
 from fractions import Fraction
 parser = argparse.ArgumentParser()
+
 parser.add_argument('-r', '--range')
 parser.add_argument('-n', '--time')
 parser.add_argument('-e', '--efile')
@@ -114,3 +115,64 @@ def compute():
         ind += 1
         list_shizi.append(str_t)
         return str_t
+
+# 将正确答案写入文件
+def write_to_ans():
+    # f = open(Path1, 'w', encoding="UTF-8")
+    f = open(args.afile, 'w', encoding="UTF-8")
+    for i in list_ans:
+        f.write(str(i))
+        f.write("\n")
+
+    # f1 = open(Path2, 'w', encoding="UTF-8")
+    f.close()
+
+# 将算式写入文件
+def write_to_shizi():
+    # f= open(Path3, 'w', encoding="UTF-8")
+    f= open(args.efile, 'w', encoding="UTF-8")
+    for i in list_shizi:
+        f.write(i)
+        f.write("\n")
+    f.close()
+
+# 判断与答案是否相同
+def pand():
+    index = 0
+    n_correct = 0
+    n_wrong = 0
+    while index < len(list_ans):
+        if index < len(list_answer) and list_ans[index] == list_answer[index]:
+            n_correct += 1
+            list_correct.append(index + 1)
+        elif index < len(list_answer) and list_ans[index] != list_answer[index]:
+            n_wrong += 1
+            list_wrong.append(index + 1)
+        index += 1
+    f = open(Path2, 'w', encoding="UTF-8")
+    tup_correct = tuple(list_correct)
+    tup_wrong = tuple(list_wrong)
+    f.write("Correct" + str(n_correct) + str(tup_correct))
+    f.write("\n")
+    f.write("Wrong" + str(n_wrong) + str(tup_wrong))
+    f.write("\n")
+    f.close()
+
+# 主函数，分别调用其他函数
+def main():
+    t = int(args.time)
+    while t:
+        # res = compute()
+        str2 = compute()
+        while not str2:
+            str2 = compute()
+        tem = input(str2)
+        list_answer.append(tem)
+        t -= 1
+
+    write_to_ans()
+    write_to_shizi()
+    pand()
+
+# 函数执行
+main()
